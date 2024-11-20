@@ -10,7 +10,7 @@ const CLIENT_ID = 'ENTER CLIENT ID';
 
 // User ID of the channel that the bot will join and listen to chat messages of
 // Can use https://www.streamweasels.com/tools/convert-twitch-username-%20to-user-id/ to find the ID
-const CHAT_CHANNEL_USER_ID = '529010729';
+const CHAT_CHANNEL_USER_ID = 'ENTER YOUR CHANNEL USER ID';
 
 const EVENTSUB_WEBSOCKET_URL = 'wss://eventsub.wss.twitch.tv/ws';
 
