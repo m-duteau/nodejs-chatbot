@@ -3,6 +3,7 @@ A chatbot that runs locally as a Node.js program with ChatGPT connection and aud
 
 ## ChatBot Basics
 The ChatBot works off of the example given at https://dev.twitch.tv/docs/chat/chatbot-guide/
+
 To enhance the ChatBot for my own personal wants, I've added a python script that will open the media player on Windows and play audio clips, functioning similar to the Blerp extension but locally.
 OpenAI Integration was also added so that people within the chatroom can trigger the bot to respond to prompts for added engagement.
 
@@ -22,6 +23,7 @@ You will need to create a second Twitch account for the bot to run through. If y
 https://youtu.be/6Eh3-WUokhQ?si=_43e7kP9JfhpxS93
 
 Retrieving user IDs for your chatbot and your actual Twitch account can be done at https://www.streamweasels.com/tools/convert-twitch-username-%20to-user-id/
+
 Retrieve your client ID by registering an app at https://dev.twitch.tv/ using the bot's Twitch account.
 
 Oauth token can be retrieved by using a link such as the following and entering your client ID in the appropriate place as well as your redirect URI (I just use localhost).
@@ -42,7 +44,9 @@ Note that you will need to keep track of your audio file's exact names and enter
 
 ### OpenAI Integration
 You will need to create an OpenAI account if attempting to use the ChatBot with it.
+
 You will then need to go retrieve a secret key to access the API via OpenAI at https://platform.openai.com/api-keys
+
 Subsequently, go into the console within the ChatBot directory and enter the following:
 ```
 setx OPENAI_API_KEY 'enter your secret key here'
