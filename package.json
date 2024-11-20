@@ -1,0 +1,14 @@
+{
+  "name": "ChatBot",
+  "version": "1.0.0",
+  "description": "Chatbot for Twitch channel.",
+  "main": "bot.js",
+  "author": "Syd Nivraam",
+  "license": "ISC",
+  "dependencies": {
+    "bot.js": "^0.0.1",
+    "openai": "^4.72.0",
+    "python-shell": "^5.0.0",
+    "ws": "^8.18.0"
+  }
+}
