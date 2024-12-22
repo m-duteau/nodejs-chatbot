@@ -1,17 +1,18 @@
 import os
 import sys
+from playsound import playsound
 
-# Enter the directory where your audio files are located.
-# Ideally this will be within the directory that houses the ChatBot files.
-# Example: audio_path = "C:/Users/currentuser/ChatBot/audio/"
-audio_path = "ENTER YOUR DIRECTORY PATH HERE"
+# audio_path uses os.getcwd() which gets the current working directory that this .py file is located in
+# Alternatively, you can remove this_dir and hard code the directory of the audio files manually
+# Example: audio_path = "C:\\Users\\currentuser\\ChatBot\\audio\\"
+audio_path = os.getcwd() + "\\audio\\"
 
 # Function plays the audio clip with the given audio file name
 def playAudioClip(audio_file_name):
     # ".mp3" denotes the file type, ".mp3" could be modified to ".wav" if using wav files, for example
     audio_file_path = audio_path + audio_file_name + ".mp3"
-    # The audio will be played using the operating system's default media player
-    os.startfile(audio_file_path)
+    # The audio will be played using the Python's playsound module
+    playsound(audio_file_path)
 
 if __name__ == "__main__":
     # Extract the argument from bot.js to get the audio_file_name
