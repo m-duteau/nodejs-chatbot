@@ -40,7 +40,7 @@ The page will not load as a valid page, but you will be able to locate the token
 ### Playing Audio Files
 Audio files should be placed in the audio/ folder and ideally be .mp3 format. Note that you will need to keep track of your audio file's exact names and enter them into the bot.js code accordingly in order to avoid crashes.
 
-Playing audio files now utilizes Python's playsound module which alleviates the issue of the operating system's default media player interrupting gameplay when it would play a new audio file. Playsound now allows audio files to play in the background and does not interrupt gameplay. To ensure playsound will work properly, make sure your pip version is the most recent and install the playsound module oon your operating system.
+Playing audio files now utilizes Python's playsound module which alleviates the issue of the operating system's default media player interrupting gameplay when it would play a new audio file. Playsound now allows audio files to play in the background and does not interrupt gameplay. To ensure playsound will work properly, make sure your pip version is the most recent and install the playsound module on your operating system.
 ```
 python -m pip install --upgrade pip
 ```
@@ -48,6 +48,14 @@ python -m pip install --upgrade pip
 ```
 pip install playsound
 ```
+
+### Managing Audio Trigger Phrases and Files
+
+Towards the top of the bot.js code is an array titled myAudio. This is where your desired audio trigger phrases and .mp3 file names will be saved for use within the main code block within the handleWebSocketMessage function. You may also attach a message that the bot will send into the Twitch chat when certain audios are triggered, but this is optional as the main code will determine whether a message exists or not and will only send a message to the chat when the audio object has a message. (The first example within the current myAudio array displays this.)
+
+It is important that all trigger phrases remain lowercase, as the handleWebSocketMessage function will convert all messages read from Twitch chat to lowercase. You can change this if desired by removing the .toLowerCase() distinction on line 120. Please be certain that you are copying .mp3 file names EXACTLY as you have stored them in the \\audio\\ folder within myAudio objects in order to avoid any crashes or unintended behaviors.
+
+Also note the commented code block under the myAudio array; this code block is for outputting a .txt file that will display all audio trigger phrases that are held within the array. You can use this text file to easily copy and paste these triggers to your bot's About page on Twitch or wherever you intend for viewers to view these trigger phrases.
 
 ### OpenAI Integration
 You will need to create an OpenAI account if attempting to use the ChatBot with it.
