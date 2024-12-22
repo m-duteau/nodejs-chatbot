@@ -1,6 +1,7 @@
 import WebSocket from 'ws';
 import OpenAI from "openai";
 import { PythonShell } from 'python-shell';
+import fs from 'fs';
 
 // User ID of the chat bot
 // Can use https://www.streamweasels.com/tools/convert-twitch-username-%20to-user-id/ to find the ID
@@ -17,6 +18,41 @@ const EVENTSUB_WEBSOCKET_URL = 'wss://eventsub.wss.twitch.tv/ws';
 const openai = new OpenAI();
 
 var websocketSessionID;
+
+// ADD YOUR AUDIO TRIGGERS AND FILE NAMES HERE
+// This array stores key-value pairs that assist in playing audio later in the code
+// Check the audio folder's files to further understand how the file names work here
+var myAudio = [
+	// each object should contain a trigger and mp3 file name
+	// ALL TRIGGERS SHOULD BE LOWERCASE
+	// ex. {trigger: "your trigger", mp3: 'the name of the mp3'}
+	{trigger: "!hello", mp3: 'Female Saying Hello Sound Effect', message: "Hello!"}, // message can be added if desired
+	{trigger: "!wompwomp", mp3: 'Sad Trombone - Sound Effect (HD)'},
+	{trigger: "!lol", mp3: 'Sound Effects - Sitcom Laugh'}
+];
+
+
+// UNCOMMENT THE FOLLOWING CODE BLOCK AND RUN node bot.js IN TERMINAL TO OUTPUT A TXT FILE OF YOUR AUDIO TRIGGERS
+// If your list of audio files/triggers becomes lengthy, this can be handy for copy/pasting to
+// your bot's Twitch channel or wherever you choose to list your audio triggers for viewers to reference
+
+/* let triggerData = "";
+
+for (var audioObj of myAudio) {
+	triggerData = triggerData + audioObj.trigger + "\n";
+}
+
+fs.writeFile("AUDIOTRIGGEROUTPUT.txt", triggerData, (err) => {
+	if (err) throw err;
+}); */
+
+
+// OPENAI TRIGGER
+// Define the phrase that will trigger OpenAI with a trailing space
+// TRIGGER SHOULD BE LOWERCASE
+const openaiTrigger = "!openai";
+// The length of the trigger will determine which part of the chat message is sent to OpenAI
+const triggerLength = openaiTrigger.length;
 
 // Start executing the bot from here
 (async () => {
@@ -79,35 +115,41 @@ function handleWebSocketMessage(data) {
 					console.log(`MSG #${data.payload.event.broadcaster_user_login} <${data.payload.event.chatter_user_login}> ${data.payload.event.message.text}`);
 
 					// This variable holds the current message being read
-					let currentMessage = data.payload.event.message.text.trim();
+					// .toLowerCase() will ensure that the message will always be saved entirely in lowercase!!!
+					// This is important if you do not want triggers to be case sensitive!!!
+					let currentMessage = data.payload.event.message.text.trim().toLowerCase();
 
 					// OpenAI (ChatGPT) prompt triggering
-					const openaiTrigger = "ENTER YOUR TRIGGER HERE"; // enter a trigger command, ex. "!ChatGPT "
-					const triggerLength = openaiTrigger.length; // the length of the trigger string
 					if (currentMessage.startsWith(openaiTrigger)) { // checks that the chat message begins with the trigger
 						// Take the remaining text within the chat message after the trigger command to send to the OpenAI API
 						promptOpenAI(currentMessage.substring(triggerLength)).then(function(returnVal) {
 							// Send the returned value as a chat message
-							sendChatMessage(returnVal)
+							sendChatMessage(returnVal);
 						});
-					}
-
-					// Chat message triggering
-					if (currentMessage == "!commands") { // Check if the chat message is a command
-						sendChatMessage("Check out currently available commands at https://www.twitch.tv/YourBotChannel/about") // Send the associated message
-					}
-
-					if (currentMessage == "!hyped") { // Check if the chat message is a command
-						sendChatMessage("TwitchConHYPE") // Send the associated message
 					}
 
 					// Audio triggering
-					if (currentMessage == "ENTER A COMMAND TO PLAY AUDIO HERE") { // Enter a trigger command, ex. "!hello"
-						PythonShell.run('audio_player.py', {
-							args: ['ENTER AUDIO FILE NAME HERE'] // This is the name of the audio file without an extension,
-																 // ex. if file is named person_saying_hello.mp3 enter 'person_saying_hello'
-						});
-						sendChatMessage("Played an audio!") // Can send a corresponding chat message is desired
+					else if (currentMessage.startsWith("!")) { // check that message starts with trigger symbol to avoid running the for loop when not necessary
+						for (var audioObj of myAudio) {
+							if (currentMessage == audioObj.trigger) { // check that message matches a trigger listed in myAudio array
+								PythonShell.run('audio_player.py', {
+									args: [audioObj.mp3] // play the associated .mp3 file name when current message matches the associated trigger
+								});
+								if (audioObj.message != null) { // send chat message only if message is defined in associated audioObj
+									sendChatMessage(audioObj.message);
+								}
+							}
+						}
+					}
+
+					// Chat message triggering
+					// AGAIN, ALL TRIGGERS DEFINED IN THE FILE SHOULD BE LOWERCASE!
+					else if (currentMessage == "!commands") { // Check if the chat message is a command
+						sendChatMessage("Check out currently available commands at https://www.twitch.tv/YourBotChannel/about"); // Send the associated message
+					}
+
+					else if (currentMessage == "!hyped") { // Check if the chat message is a command
+						sendChatMessage("TwitchConHYPE"); // Send the associated message
 					}
 
 					break;
