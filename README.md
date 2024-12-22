@@ -38,20 +38,34 @@ https://id.twitch.tv/oauth2/authorize
 The page will not load as a valid page, but you will be able to locate the token within your browser's address bar.
 
 ### Playing Audio Files
-Audio files should be placed in the audio/ folder and ideally be .mp3 format. Note that these files will be played through your system's default media player. This could cause the media to jump to the foreground and interrupt gameplay, but I find this is not an issue when the media player is running in a second screen. I will consider looking into the pygame module in the future as I believe this can be used to play audio files as background processes but I'm satisfied with the current state running the system's media player for the time being.
+Audio files should be placed in the audio/ folder and ideally be .mp3 format. Note that you will need to keep track of your audio file's exact names and enter them into the bot.js code accordingly in order to avoid crashes.
 
-Note that you will need to keep track of your audio file's exact names and enter them into the bot.js code accordingly in order to avoid crashes.
+Playing audio files now utilizes Python's playsound module which alleviates the issue of the operating system's default media player interrupting gameplay when it would play a new audio file. Playsound now allows audio files to play in the background and does not interrupt gameplay. To ensure playsound will work properly, make sure your pip version is the most recent and install the playsound module oon your operating system.
+```
+python -m pip install --upgrade pip
+```
+
+```
+pip install playsound
+```
 
 ### OpenAI Integration
 You will need to create an OpenAI account if attempting to use the ChatBot with it.
 
 You will then need to go retrieve a secret key to access the API via OpenAI at https://platform.openai.com/api-keys
 
-Subsequently, go into the console within the ChatBot directory and enter the following:
+Subsequently, right-click the directory that houses all of the files (bot.js, audio_player.py, /audio/ folder, etc.), click "Open in Terminal" and enter the following:
 ```
 setx OPENAI_API_KEY 'enter your secret key here'
 ```
 This will allow the chatbot to access the OpenAI API. You may need to pay in order for access to the API to succeed when making calls, though that gpt-4o-mini is arguably cheap when just doing text prompts.
 
+### Running The Bot
+To run the bot on Windows, right-click the directory that houses all of the files (bot.js, audio_player.py, /audio/ folder, etc.) and click "Open in Terminal".
+Next, simply type in the following:
+```
+node bot.js
+```
+Hit the Enter button and, voila, your bot is now monitoring your Twitch channel's chat messages and will respond accordingly!
 
-Have fun.
+Have fun!
