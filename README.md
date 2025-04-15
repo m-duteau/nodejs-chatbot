@@ -26,7 +26,7 @@ Retrieving user IDs for your chatbot and your actual Twitch account can be done 
 
 Retrieve your client ID by registering an app at https://dev.twitch.tv/ using the bot's Twitch account.
 
-Oauth token can be retrieved by using a link such as the following and entering your client ID in the appropriate place as well as your redirect URI (I just use localhost). You must be signed into Twitch as the bot account to retrieve the token, not you regular Twitch account that the bot is being run for.
+Oauth token can be retrieved by using a link such as the following and entering your client ID in the appropriate place as well as your redirect URI (I just use localhost). You must be signed into Twitch as the bot account in order to retrieve the token, not your regular Twitch account that the bot is being run for.
 ```
 https://id.twitch.tv/oauth2/authorize
     ?response_type=token
