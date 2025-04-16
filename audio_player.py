@@ -3,7 +3,7 @@ import sys
 from playsound import playsound
 
 # audio_path uses os.getcwd() which gets the current working directory that this .py file is located in
-# Alternatively, you can remove this_dir and hard code the directory of the audio files manually
+# Alternatively, you can remove the os.getcwd() call and hard code the directory of the audio files manually
 # Example: audio_path = "C:\\Users\\currentuser\\ChatBot\\audio\\"
 audio_path = os.getcwd() + "\\audio\\"
 
