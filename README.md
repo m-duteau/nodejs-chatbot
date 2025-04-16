@@ -1,5 +1,11 @@
 # nodejs-chatbot
-A chatbot that runs locally as a Node.js program with ChatGPT connection and audio playing script.
+A chatbot that runs locally as a Node.js program with ChatGPT connection and audio playing script. The repository serves as a baseline for what can be done with the chatbot; users are encouraged to modify the bot.js script as they see fit to implement their own unique commands and features.
+
+The module for playing audio files serves as a free alternative for other audio clip player services, such that viewers of the stream can input commands that will play a sound clip. The audio file names and trigger phrases are stored as key-value objects in an array within bot.js that are utilized within audio_player.py to play an associated audio file using the Playsound library.
+
+Calls to OpenAI's ChatGPT-4o mini are also implemented within bot.js as an asynchronous function so that users may send prompts to the bot, where the bot will subsequently send ChatGPT's response to the prompt as a chat message within the streamer's chat.
+
+The overall goal of this project is to inspire users to customize a bot that suits the needs of their streaming chat while also encouraging and retaining viewer engagement.
 
 ## ChatBot Basics
 The ChatBot works off of the example given at https://dev.twitch.tv/docs/chat/chatbot-guide/
