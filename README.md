@@ -32,7 +32,7 @@ Retrieving user IDs for your chatbot and your actual Twitch account can be done 
 
 Retrieve your client ID by registering an app at https://dev.twitch.tv/ using the bot's Twitch account.
 
-Oauth token can be retrieved by using a link such as the following and entering your client ID in the appropriate place as well as your redirect URI (I just use localhost). You must be signed into Twitch as the bot account in order to retrieve the token, not your regular Twitch account that the bot is being run for.
+Oauth token can be retrieved by using a link such as the following and entering your client ID in the appropriate place as well as your redirect URI (I just use localhost). You must be signed into Twitch AS THE BOT ACCOUNT in order to retrieve the token, not your regular Twitch account that the bot is being run for.
 ```
 https://id.twitch.tv/oauth2/authorize
     ?response_type=token
@@ -41,7 +41,12 @@ https://id.twitch.tv/oauth2/authorize
     &scope=user%3Aread%3Achat+user%3Awrite%3Achat
 ```
 
+This link is also provided in oauthtokenlink.txt in order to easily copy and paste it, but you will need to enter your client ID in the appropriate section.
+
 The page will not load as a valid page, but you will be able to locate the token within your browser's address bar.
+
+### Chat Commands
+Different chat command triggers will be housed in chat-triggers.js; this file is mainly for command triggers that respond with a chat message. I.e., typing "!commands" in the Twitch chat will cause the bot to respond with a link to the bot's Twitch channel's About section where you can list the bot's command triggers for reference. You can add different command triggers and associated chatMessages that will be sent as responses as you see fit.
 
 ### Playing Audio Files
 Audio files should be placed in the audio/ folder and ideally be .mp3 format. Note that you will need to keep track of your audio file's exact names and enter them into the bot.js code accordingly in order to avoid crashes.
@@ -57,11 +62,16 @@ pip install playsound
 
 ### Managing Audio Trigger Phrases and Files
 
-Towards the top of the bot.js code is an array titled myAudio. This is where your desired audio trigger phrases and .mp3 file names will be saved for use within the main code block within the handleWebSocketMessage function. You may also attach a message that the bot will send into the Twitch chat when certain audios are triggered, but this is optional as the main code will determine whether a message exists or not and will only send a message to the chat when the audio object has a message. (The first example within the current myAudio array displays this.)
+The file titled audio-trigger.js will house all of the audio command triggers and their associated audio files. You can add new commands as you see fit so long as audio files have been added to the \\audio\\ folder.
 
-It is important that all trigger phrases remain lowercase, as the handleWebSocketMessage function will convert all messages read from Twitch chat to lowercase. You can change this if desired by removing the .toLowerCase() distinction on line 120. Please be certain that you are copying .mp3 file names EXACTLY as you have stored them in the \\audio\\ folder within myAudio objects in order to avoid any crashes or unintended behaviors.
+It is important that all trigger phrases remain lowercase, as the handleWebSocketMessage function will convert all messages read from Twitch chat to lowercase. You can change this if desired by removing the .toLowerCase() distinction on line 120. Please be certain that you are copying .mp3 file names EXACTLY as you have stored them in the \\audio\\ folder within audio-trigger.js objects' {file: "audiofilenamehere"} in order to avoid any crashes or unintended behaviors.
 
-Also note the commented code block under the myAudio array; this code block is for outputting a .txt file that will display all audio trigger phrases that are held within the array. You can use this text file to easily copy and paste these triggers to your bot's About page on Twitch or wherever you intend for viewers to view these trigger phrases.
+Also note that there is a file named export-audio-triggers.js; if you add many audio files and triggers such that it is difficult to keep track of them all to copy to your bot's Twitch channel About page, you can run the following code when right-clicking the directory that houses all of the files (bot.js, audio_player.py, /audio/ folder, etc.) and clicking "Open in Terminal":
+```
+node export-audio-triggers.js
+```
+
+This will output a .txt file that contains all of the audio triggers you are using, each on their own line. This makes copying and pasting them much easier.
 
 ### OpenAI Integration
 You will need to create an OpenAI account if attempting to use the ChatBot with it.
@@ -73,6 +83,9 @@ Subsequently, right-click the directory that houses all of the files (bot.js, au
 setx OPENAI_API_KEY 'enter your secret key here'
 ```
 This will allow the chatbot to access the OpenAI API. You may need to pay in order for access to the API to succeed when making calls, though that gpt-4o-mini is arguably cheap when just doing text prompts.
+
+### Using OpenAI Triggers
+The file titled openai-triggers.js will house the OpenAI command triggers and behaviors. By adding new objects to this file, you can have multiple different behaviors that the OpenAI will respond with depending on the command trigger that is used. Use this as you see fit in order to switch up the OpenAI's personality when responding to prompts. 
 
 ### Running The Bot
 To run the bot on Windows, right-click the directory that houses all of the files (bot.js, audio_player.py, /audio/ folder, etc.) and click "Open in Terminal".
