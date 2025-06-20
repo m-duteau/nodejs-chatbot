@@ -7,6 +7,7 @@ dotenv.config({ path: "../.env" });
 // ex., will return "MyUserName" instead of "myusername"
 export async function getDisplayName(username) {
     try {
+        // Gets the requested username
         const res = await axios.get("https://api.twitch.tv/helix/users", {
             headers: {
                 "Client-ID": process.env.TWITCH_CLIENT_ID,
@@ -18,6 +19,7 @@ export async function getDisplayName(username) {
         });
 
         const user = res.data.data[0];
+        // Return the display name, else just return the regular username
         return user?.display_name || username;
     } catch (err) {
         console.error(

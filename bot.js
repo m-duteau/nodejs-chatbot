@@ -1,7 +1,8 @@
 import WebSocket from "ws";
 import dotenv from "dotenv";
-import { getDisplayName } from "./utils/get-display-name.js";
 import { processCommand } from "./handlers/command-processor.js";
+import { getDisplayName } from "./utils/get-display-name.js";
+import { startPolling } from "./spotify/index.js";
 
 dotenv.config();
 
@@ -21,6 +22,9 @@ var websocketSessionID;
 
     // Start WebSocket client and register handlers
     const websocketClient = startWebSocketClient();
+
+    // Start polling Spotify for current track
+    startPolling(sendChatMessage);
 })();
 
 // WebSocket will persist the application loop until you exit the program forcefully

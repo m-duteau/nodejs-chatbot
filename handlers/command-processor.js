@@ -5,8 +5,9 @@ import {
     chatTriggers,
     openaiTriggers,
 } from "../triggers/index.js";
-import { PythonShell } from "python-shell";
 import { promptOpenAI } from "../utils/openai-helper.js";
+import { PythonShell } from "python-shell";
+import { handleSpotifyCommand } from "../spotify/index.js";
 
 // Path to the script that runs audio for audio commands
 const audioPlayerPath = path.resolve("utils", "audio_player.py");
@@ -25,6 +26,11 @@ export async function processCommand(message, currentChatter, sendChatMessage) {
     const matchedChatTrigger = getTriggerMatch(message, chatTriggers);
     // This variable will hold audio trigger data if the message starts with a trigger (I.e., "!lol")
     const matchedAudioTrigger = getTriggerMatch(message, audioTriggers);
+    // This variable will hold Spotify trigger if the message starts with a trigger (I.e., "!songrequest")
+    const matchedSpotifyTrigger = getTriggerMatch(
+        potentialTrigger,
+        spotifyTriggers
+    );
 
     // If an OpenAI trigger phrase was detected in the message, promptOpenAI will execute and a response will be sent to the chat
     if (matchedOpenaiTrigger) {
@@ -54,5 +60,18 @@ export async function processCommand(message, currentChatter, sendChatMessage) {
         if (matchedAudioTrigger.data.audioMessage != null) {
             await sendChatMessage(matchedAudioTrigger.data.audioMessage);
         }
+    }
+
+    // If a Spotify trigger was detected, we'll consult handleSpotifyCommand() from the Spotify module
+    else if (matchedSpotifyTrigger) {
+        // Take the string after the Spotify trigger in case there's a query, e.g., song/artist name or url
+        const query = restWords.join(" ").trim();
+        // Spotify module will handle the rest
+        await handleSpotifyCommand(
+            matchedSpotifyTrigger.key,
+            query,
+            currentChatter,
+            sendChatMessage
+        );
     }
 }
