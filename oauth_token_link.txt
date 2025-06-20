@@ -1,0 +1,1 @@
+https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=PUTYOURCLIENTIDHERE&redirect_uri=http://localhost&scope=user%3Aread%3Achat+user%3Awrite%3Achat+user%3Aread%3Aemail+user%3Aread%3Asubscriptions
