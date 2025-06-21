@@ -4,6 +4,7 @@ import {
     audioTriggers,
     chatTriggers,
     openaiTriggers,
+    spotifyTriggers,
 } from "../triggers/index.js";
 import { promptOpenAI } from "../utils/openai-helper.js";
 import { PythonShell } from "python-shell";
