@@ -3,8 +3,10 @@ import {
     getAccessToken,
     nowPlaying,
     isRequesterNameEnabled,
+    removeFirstFromQueue,
 } from "../index.js";
 
+const lastSongPath = path.resolve("spotify", "queue", "last-song.json");
 let lastTrackUri = null;
 
 /*
@@ -23,7 +25,13 @@ export async function pollCurrentTrack(sendChatMessage) {
         );
 
         // If no track is playing
-        if (res.status === 204 || !res.data.is_playing) {
+        if (
+            res.status === 204 ||
+            !res.data ||
+            !res.data.is_playing ||
+            !res.data.item ||
+            !res.data.item.uri
+        ) {
             lastTrackUri = null;
             return;
         }
@@ -35,6 +43,27 @@ export async function pollCurrentTrack(sendChatMessage) {
         if (currentTrackUri !== lastTrackUri) {
             // In this case, make last track equal to the current track to detect when the track changes and call nowPlaying() when the track changes
             lastTrackUri = currentTrackUri;
+
+            const playedSong = removeFirstFromQueue();
+
+            // If playedSong holds an object, write it to last-song.json
+            if (
+                playedSong &&
+                typeof playedSong === "object" &&
+                playedSong.uri
+            ) {
+                fs.writeFileSync(
+                    lastSongPath,
+                    JSON.stringify(playedSong, null, 2)
+                );
+                // Else write currentTrackUri to last-song.json
+            } else {
+                fs.writeFileSync(
+                    lastSongPath,
+                    JSON.stringify({ uri: currentTrackUri }, null, 2)
+                );
+            }
+
             await nowPlaying(sendChatMessage, isRequesterNameEnabled());
         }
     } catch (err) {

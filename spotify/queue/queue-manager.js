@@ -1,4 +1,9 @@
-import { queueSong, getTrackInfoUrl, searchSong } from "../index.js";
+import {
+    queueSong,
+    getTrackInfoUrl,
+    searchSong,
+    addToQueue,
+} from "../index.js";
 
 /*
  * Handles queueing a song via a query
@@ -22,7 +27,8 @@ export async function handleQueueSong(query, currentChatter, sendChatMessage) {
         if (!track) return;
 
         // Queue the song
-        await queueSong(track.uri, currentChatter);
+        await queueSong(track.uri);
+        addToQueue(track, currentChatter);
 
         // Send a message to the chat
         sendChatMessage(

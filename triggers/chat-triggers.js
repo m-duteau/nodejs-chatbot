@@ -13,5 +13,5 @@ export const chatTriggers = {
         chatMessage:
             "We'll miss your kind words, but thanks for supporting the stream!",
     },
-    hyped: { chatMessage: "TwitchConHYPE" }, // <- only the last element does not need a comma, add comma if adding more sounds
+    hyped: { chatMessage: "TwitchConHYPE" },
 };

@@ -4,6 +4,9 @@
     "type": "module",
     "description": "Chatbot for Twitch channel.",
     "main": "bot.js",
+    "scripts": {
+        "start": "node bot.js"
+    },
     "author": "Michael Duteau",
     "license": "ISC",
     "dependencies": {

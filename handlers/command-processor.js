@@ -41,7 +41,8 @@ export async function processCommand(message, currentChatter, sendChatMessage) {
         const returnVal = await promptOpenAI(
             userPrompt,
             matchedOpenaiTrigger.data.behavior,
-            currentChatter
+            currentChatter,
+            matchedAudioTrigger.key
         );
         // Send the returned value as a chat message
         await sendChatMessage(returnVal);

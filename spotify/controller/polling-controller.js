@@ -25,9 +25,7 @@ export function startPolling(sendChatMessage) {
     }, 5000);
 }
 
-/*
- * Stop polling; clear the pollingInterval and empty the sendChatMessage reference
- */
+// Stop polling; clear the pollingInterval and empty the sendChatMessage reference
 export function stopPolling() {
     if (pollingInterval) {
         clearInterval(pollingInterval);

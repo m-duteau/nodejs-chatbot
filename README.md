@@ -1,8 +1,19 @@
+## Table of Contents
+
+-   [Overview](#nodejs-chatbot)
+-   [Setup](#setup)
+-   [Connecting to Twitch](#connecting-to-twitch)
+-   [Connecting to Spotify](#connecting-to-spotify)
+-   [Using the Bot](#using-the-bot)
+-   [Running the Bot](#running-the-bot)
+-   [Troubleshooting](#troubleshooting)
+-   [License](#license)
+
 # nodejs-chatbot
 
 A chatbot that runs locally as a Node.js program with ChatGPT connection and audio playing script. The repository serves as a baseline for what can be done with the chatbot; users are encouraged to modify the bot.js script as they see fit to implement their own unique commands and features.
 
-The module for playing audio files serves as a free alternative for other audio clip player services, such that viewers of the stream can input commands that will play a sound clip.
+The audio module serves as a free alternative to other sound clip services, such that viewers of the stream can input commands that will play a sound clip.
 
 Calls to OpenAI's ChatGPT-4o mini are also implemented so that users may send prompts to the bot, where the bot will subsequently send ChatGPT's response to the prompt as a chat message within the streamer's chat.
 
@@ -16,6 +27,7 @@ The ChatBot works off of the example given at https://dev.twitch.tv/docs/chat/ch
 
 To enhance the ChatBot for my own personal wants, I've added a python script that will open the media player on Windows and play audio clips, functioning similar to the Blerp extension but locally.
 OpenAI Integration was also added so that people within the chatroom can trigger the bot to respond to prompts for added engagement.
+Spotify module was later added to connect to your Spotify client in order to allow chat users to queue songs.
 
 ## Setup
 
@@ -40,7 +52,7 @@ Retrieving user IDs for your chatbot and your actual Twitch account can be done 
 
 Retrieve your client ID by registering an app at https://dev.twitch.tv/ using the bot's Twitch account.
 
-Oauth token can be retrieved by using a link such as the following and entering your client ID in the appropriate place as well as your redirect URI (I just use localhost). You must be signed into Twitch AS THE BOT ACCOUNT in order to retrieve the token, not your regular Twitch account that the bot is being run for.
+An OAuth token can be retrieved using the following link and entering your client ID in the appropriate place as well as your redirect URI (I just use localhost). You must be signed into Twitch AS THE BOT ACCOUNT in order to retrieve the token, not your regular Twitch account that the bot is being run for.
 
 ```
 https://id.twitch.tv/oauth2/authorize
@@ -150,9 +162,34 @@ To run the bot on Windows after carefully considering all the previous steps, ri
 Next, simply type in the following:
 
 ```
-node bot.js
+npm start
 ```
 
-Hit the Enter button and, voila, your bot is now monitoring your Twitch channel's chat messages and will respond accordingly!
+Press Enter, and voilà — your bot is now monitoring your Twitch channel's chat messages and will respond accordingly!
 
 Have fun!
+
+## Troubleshooting
+
+If audio files don’t play, make sure `playsound` is installed with `pip install playsound`.
+If OpenAI isn’t responding, double-check that your OpenAI API key is set using `setx`.
+For Spotify issues, confirm your token has not expired.
+
+For other issues, please reach out to me at meduteauii@gmail.com and I will do my best to get back to you to solve any issues.
+
+## License
+
+MIT License
+
+### Contributing
+
+Pull requests are welcome! If you have ideas, feel free to open an issue or submit a PR.
+
+### Cloning
+
+Feel free to clone the repo for your own use and development!
+
+```
+git clone https://github.com/yourusername/nodejs-chatbot.git
+cd nodejs-chatbot
+```

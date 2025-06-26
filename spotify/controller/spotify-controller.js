@@ -4,6 +4,8 @@ import {
     handleQueueSong,
     startPolling,
     stopPolling,
+    peekQueue,
+    clearQueue,
 } from "../index.js";
 
 // Array of authorized users that can trigger certain commands that are not available to all chatroom members
@@ -27,7 +29,7 @@ async function handleSpotifyCommand(
     sendChatMessage
 ) {
     // Spotify module is not enabled; return
-    if (!spotifyEnabled && trigger !== "spotifyon") {
+    if (!spotifyEnabled && (trigger !== "spotifyon" || trigger !== "spon")) {
         sendChatMessage("Spotify module is not currently enabled.");
         return;
     }
@@ -58,6 +60,7 @@ async function handleSpotifyCommand(
             break;
         // Turn on the Spotify module
         case "spotifyon":
+        case "spon":
             if (!isAuthorizedUser(currentChatter)) {
                 // Send access denied message for non-authorized users
                 sendAccessDenied(sendChatMessage);
@@ -73,6 +76,7 @@ async function handleSpotifyCommand(
             break;
         // Turn off the Spotify module
         case "spotifyoff":
+        case "spoff":
             if (!isAuthorizedUser(currentChatter)) {
                 // Send access denied message for non-authorized users
                 sendAccessDenied(sendChatMessage);
@@ -85,6 +89,7 @@ async function handleSpotifyCommand(
             break;
         // Turn on requester's name in nowPlaying message
         case "requesternameon":
+        case "rnon":
             if (!isAuthorizedUser(currentChatter)) {
                 // Send access denied message for non-authorized users
                 sendAccessDenied(sendChatMessage);
@@ -96,6 +101,7 @@ async function handleSpotifyCommand(
             break;
         // Turn off requester's name in nowPlaying message
         case "requesternameoff":
+        case "rnoff":
             if (!isAuthorizedUser(currentChatter)) {
                 // Send access denied message for non-authorized users
                 sendAccessDenied(sendChatMessage);
@@ -103,6 +109,42 @@ async function handleSpotifyCommand(
                 // Else disable requester name and confirm with message
                 requesterNameEnabled = false;
                 sendChatMessage("Requester name disabled.");
+            }
+            break;
+        // Display queue of next 5 tracks (or less) in the queue
+        case "queue":
+        case "q":
+            // Get first 5 (or less) tracks in queue.json
+            const upcoming = peekQueue(5);
+            // If length is 0 then queue.json is empty
+            if (upcoming.length === 0) {
+                sendChatMessage("The queue is currently empty.");
+            } else {
+                // Join all queue.json items taken into a string
+                const summary = upcoming
+                    .map((item, i) => {
+                        const artists = item.track.artists
+                            .map((a) => a.name)
+                            .join(", ");
+                        const requester = requesterNameEnabled
+                            ? ` (${item.username})`
+                            : "";
+                        return `${i + 1}. ${
+                            item.track.name
+                        } by ${artists}${requester}`;
+                    })
+                    .join(" | ");
+                // Return the queue to chat
+                sendChatMessage(`Up next: ${summary}`);
+            }
+            break;
+        // Clears queue.json
+        case "clearqueue":
+        case "cq":
+            if (!isAuthorizedUser(currentChatter)) {
+                sendAccessDenied(sendChatMessage);
+            } else {
+                clearQueue();
             }
             break;
     }

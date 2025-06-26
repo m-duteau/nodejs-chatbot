@@ -12,3 +12,10 @@ export { skipSong } from "./core/skip-song.js";
 export { startPolling, stopPolling } from "./controller/polling-controller.js";
 export { handleQueueSong } from "./queue/queue-manager.js";
 export { pollCurrentTrack } from "./queue/poller.js";
+export {
+    getQueue,
+    addToQueue,
+    removeFirstFromQueue,
+    peekQueue,
+    clearQueue,
+} from "./queue/queue-storage.js";

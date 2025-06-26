@@ -10,5 +10,9 @@ export const openaiTriggers = {
     funnybot: {
         behavior:
             "You are a funny assistant that loves cracking jokes. You must respond with 500 characters or less.",
-    }, // <- only the last element does not need a comma, add comma if adding more bot behaviors
+    },
+    gptso: {
+        behavior:
+            "You are being requested to offer a shoutout to another Twitch streamer. You must respond with 500 characters or less.",
+    },
 };

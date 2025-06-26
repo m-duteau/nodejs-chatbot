@@ -6,5 +6,5 @@ ALL TRIGGERS SHOULD BE LOWERCASE -- do not include prefixes like '!' or '$'; /ut
 export const audioTriggers = {
     hello: { file: "Female Saying Hello Sound Effect", audioMessage: "Hello!" }, // message can be added if desired
     wompwomp: { file: "Sad Trombone - Sound Effect (HD)" },
-    lol: { file: "Sound Effects - Sitcom Laugh" }, // <- only the last element does not need a comma, add comma if adding more sounds
+    lol: { file: "Sound Effects - Sitcom Laugh" },
 };

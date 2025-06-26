@@ -41,10 +41,19 @@ export async function nowPlaying(sendChatMessage, requesterNameEnabled) {
         let requestedBy = null;
         // If requester name is enabled and last-song.json exists we can parse the username that requested the last song
         if (requesterNameEnabled && fs.existsSync(lastSongPath)) {
-            const lastSong = JSON.parse(fs.readFileSync(lastSongPath, "utf-8"));
-            if (lastSong.uri === currentUri) {
-                // Take the username if the current song uri is the same as the uri in last-song.json
-                requestedBy = lastSong.username;
+            try {
+                const content = fs.readFileSync(lastSongPath, "utf-8").trim();
+                // Check that last-song.json loads properly
+                if (content) {
+                    const lastSong = JSON.parse(content);
+                    if (lastSong.uri === currentUri) {
+                        // Take the username if the current song uri is the same as the uri in last-song.json
+                        requestedBy = lastSong.username;
+                    }
+                }
+                // Alert if last-song.json could not be parsed
+            } catch (err) {
+                console.warn("Could not parse last-song.json: ", err.message);
             }
         }
 

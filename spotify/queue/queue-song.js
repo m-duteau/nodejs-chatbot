@@ -1,15 +1,8 @@
-import fs from "fs";
-import path from "path";
 import axios from "axios";
 import { getAccessToken } from "../index.js";
 
-const lastSongPath = path.resolve("spotify", "queue", "last-song.json");
-
-/*
- * Queues a song using the uri
- * params uri and username are written to last-song.json to track who had requested the song when calling nowPlaying()
- */
-export async function queueSong(uri, username) {
+//Queues a song using the uri
+export async function queueSong(uri) {
     let accessToken = await getAccessToken();
 
     try {
@@ -18,12 +11,6 @@ export async function queueSong(uri, username) {
             headers: { Authorization: `Bearer ${accessToken}` },
             params: { uri },
         });
-
-        // Save who requested the song
-        fs.writeFileSync(
-            lastSongPath,
-            JSON.stringify({ uri, username }, null, 2)
-        );
     } catch (err) {
         if (err.response?.status === 401) {
             // Force refresh token
@@ -37,12 +24,6 @@ export async function queueSong(uri, username) {
                     headers: { Authorization: `Bearer ${accessToken}` },
                     params: { uri },
                 }
-            );
-
-            // Save who requested the song after retry
-            fs.writeFileSync(
-                lastSongPath,
-                JSON.stringify({ uri, username }, null, 2)
             );
         } else {
             throw err;
