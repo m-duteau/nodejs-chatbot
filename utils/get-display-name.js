@@ -1,17 +1,17 @@
 import axios from "axios";
-import dotenv from "dotenv";
-
-dotenv.config({ path: "../.env" });
+import { readUserSecret } from "./config-utils.js";
 
 // Function will get the display name of the user in regular casing via Twitch API
 // ex., will return "MyUserName" instead of "myusername"
 export async function getDisplayName(username) {
     try {
+        const clientId = readUserSecret("TWITCH_CLIENT_ID");
+        const oauthToken = readUserSecret("TWITCH_OAUTH_TOKEN");
         // Gets the requested username
         const res = await axios.get("https://api.twitch.tv/helix/users", {
             headers: {
-                "Client-ID": process.env.TWITCH_CLIENT_ID,
-                Authorization: `Bearer ${process.env.TWITCH_OAUTH_TOKEN}`,
+                "Client-ID": clientId,
+                Authorization: `Bearer ${oauthToken}`,
             },
             params: {
                 login: username,

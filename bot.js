@@ -1,15 +1,13 @@
 import WebSocket from "ws";
-import dotenv from "dotenv";
 import { processCommand } from "./handlers/command-processor.js";
 import { getDisplayName } from "./utils/get-display-name.js";
 import { startPolling } from "./spotify/index.js";
+import { readUserSecret } from "./utils/config-utils.js";
 
-dotenv.config();
-
-const BOT_USER_ID = process.env.TWITCH_BOT_USER_ID;
-const OAUTH_TOKEN = process.env.TWITCH_OAUTH_TOKEN;
-const CLIENT_ID = process.env.TWITCH_CLIENT_ID;
-const CHAT_CHANNEL_USER_ID = process.env.TWITCH_CHAT_CHANNEL_USER_ID;
+const CHAT_CHANNEL_USER_ID = readUserSecret("TWITCH_CHAT_CHANNEL_USER_ID");
+const BOT_USER_ID = readUserSecret("TWITCH_BOT_USER_ID");
+const CLIENT_ID = readUserSecret("TWITCH_CLIENT_ID");
+const OAUTH_TOKEN = readUserSecret("TWITCH_OAUTH_TOKEN");
 
 const EVENTSUB_WEBSOCKET_URL = "wss://eventsub.wss.twitch.tv/ws";
 

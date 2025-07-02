@@ -1,20 +1,17 @@
 import fs from "fs";
 import path from "path";
 import axios from "axios";
-import dotenv from "dotenv";
 import { fileURLToPath } from "url";
-
-// Path to .env
-dotenv.config({ path: "../../.env" });
+import { readUserSecret } from "../../utils/config-utils.js";
 
 // Path to spotify-tokens.json
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const tokenPath = path.resolve(__dirname, "spotify-tokens.json");
 
-// Find the access token and refresh token held in .env
-let accessToken = process.env.SPOTIFY_ACCESS_TOKEN;
-let refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
+// Find the access token and refresh token held in config.json
+let accessToken = readUserSecret("SPOTIFY_ACCESS_TOKEN");
+let refreshToken = readUserSecret("SPOTIFY_REFRESH_TOKEN");
 let tokenExpiresAt = 0;
 
 // Gets access token; will get new access token and refresh token if needed
@@ -37,7 +34,7 @@ export async function getAccessToken(force = false) {
 function loadTokens() {
     if (fs.existsSync(tokenPath)) {
         try {
-            const data = JSON.parse(fs.readFileSync(tokenPath));
+            const data = JSON.parse(fs.readFileSync(tokenPath, "utf-8"));
             accessToken = data.access_token;
             refreshToken = data.refresh_token;
             tokenExpiresAt = data.expires_at || 0;
@@ -55,12 +52,12 @@ function loadTokens() {
 }
 
 if (!loadTokens()) {
-    // Fallback to .env if spotify-tokens.json does not exist or is corrupt
+    // Fallback to config if spotify-tokens.json does not exist or is corrupt
     console.warn(
-        "spotify-tokens.json not found or unreadable. Using fallback from .env; tokens will be saved to spotify-tokens.json after .env fallback."
+        "spotify-tokens.json not found or unreadable. Using fallback from config.json; tokens will be saved to spotify-tokens.json after config.json fallback."
     );
-    accessToken = process.env.SPOTIFY_ACCESS_TOKEN || "";
-    refreshToken = process.env.SPOTIFY_REFRESH_TOKEN || "";
+    accessToken = readUserSecret("SPOTIFY_ACCESS_TOKEN") || "";
+    refreshToken = readUserSecret("SPOTIFY_REFRESH_TOKEN") || "";
     tokenExpiresAt = 0;
 }
 
@@ -78,8 +75,10 @@ function saveTokens() {
 // Refreshes the access token when necessary and returns new token data
 async function refreshAccessToken() {
     try {
+        const clientId = readUserSecret("SPOTIFY_CLIENT_ID");
+        const clientSecret = readUserSecret("SPOTIFY_CLIENT_SECRET");
         const authHeader = Buffer.from(
-            `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
+            `${clientId}:${clientSecret}`,
             "utf-8"
         ).toString("base64");
 

@@ -2,21 +2,64 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-        <meta
-            http-equiv="Content-Security-Policy"
-            content="default-src 'self'; script-src 'self'"
-        />
-        <meta
-            http-equiv="X-Content-Security-Policy"
-            content="default-src 'self'; script-src 'self'"
-        />
-        <title>Hello from Electron renderer!</title>
+        <title>Bot Credentials</title>
     </head>
     <body>
-        <h1>Hello from Electron renderer!</h1>
-        <p>👋</p>
-        <p id="info"></p>
+        <h1>Enter Bot Credentials</h1>
+
+        <form id="credentialsForm">
+            <label for="twitchChannelUserID">Twitch Channel User ID:</label
+            ><br />
+            <input
+                type="text"
+                id="twitchChannelUserID"
+                name="twitchChannelUserID"
+                required
+            /><br /><br />
+
+            <label for="twitchBotUserID">Twitch Bot User ID:</label><br />
+            <input
+                type="text"
+                id="twitchBotUserID"
+                name="twitchBotUserID"
+                required
+            /><br /><br />
+
+            <label for="twitchClientID">Twitch Bot Client ID:</label><br />
+            <input
+                type="text"
+                id="twitchClientID"
+                name="twitchClientID"
+                required
+            /><br /><br />
+
+            <label for="twitchToken">Twitch OAuth Token:</label><br />
+            <input
+                type="password"
+                id="twitchToken"
+                name="twitchToken"
+                required
+            /><br /><br /><br />
+
+            <label for="spotifyClientID">Spotify Client ID:</label><br />
+            <input
+                type="text"
+                id="spotifyClientID"
+                name="spotifyClientID"
+                required
+            /><br /><br />
+
+            <label for="spotifyClientSecret">Spotify Client Secret:</label
+            ><br />
+            <input
+                type="password"
+                id="spotifyClientSecret"
+                name="spotifyClientSecret"
+                required
+            /><br /><br />
+
+            <button type="submit">Save and Start Bot</button>
+        </form>
     </body>
-    <srcipt src="./renderer.js"></srcipt>
+    <script src="./renderer.js"></script>
 </html>
