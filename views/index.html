@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Control Panel</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .left-panel {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .left-panel button {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+
+            .right-panel {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 15px;
+            }
+
+            .start-button {
+                padding: 15px 40px;
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            .spotify-toggle {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                gap: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="left-panel">
+                <button id="editChat">Edit Chat Triggers</button>
+                <button id="editAudio">Edit Audio Triggers</button>
+                <button id="editOpenAI">Edit OpenAI Triggers</button>
+                <button id="editPrefixes">Edit Trigger Prefixes</button>
+            </div>
+
+            <div class="right-panel">
+                <button class="start-button" id="startBot">Start Bot</button>
+                <label class="spotify-toggle">
+                    <input type="checkbox" id="spotifyEnabled" checked />
+                    Enable Spotify Module
+                </label>
+            </div>
+        </div>
+
+        <script src="../renderer/index.js" defer></script>
+    </body>
+</html>
