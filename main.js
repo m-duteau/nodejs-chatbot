@@ -6,7 +6,17 @@ import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const configPath = path.join(app.getPath("userData"), "config.json");
+const userDataDir = app.getPath("userData");
+const configPath = path.join(userDataDir, "config.json");
+const defaultsDir = path.join(__dirname, "defaults");
+
+const defaultTriggersMap = {
+    chat: "chat-triggers.default.json",
+    audio: "audio-triggers.default.json",
+    openai: "openai-triggers.default.json",
+    spotify: "spotify-triggers.default.json",
+    prefixes: "prefixes.default.json",
+};
 
 ipcMain.handle("credentials-submitted", async (event, creds) => {
     console.log("Received credentials:", creds);
@@ -57,6 +67,8 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
+    Object.keys(defaultTriggersMap).forEach(ensureTriggerFile);
+
     createWindow();
 
     app.on("activate", () => {
@@ -71,3 +83,18 @@ app.on("window-all-closed", () => {
         app.quit();
     }
 });
+
+function ensureTriggerFile(triggerType) {
+    const defaultFileName = defaultTriggersMap[triggerType];
+    const userFileName = defaultFileName.replace(".default", "");
+
+    const userFile = path.join(userDataDir, userFileName);
+    const defaultFile = path.join(defaultsDir, defaultFileName);
+
+    if (!fs.existsSync(userFile)) {
+        console.log(
+            `Copying default ${triggerType} triggers to user data folder.`
+        );
+        fs.copyFileSync(defaultFile, userFile);
+    }
+}

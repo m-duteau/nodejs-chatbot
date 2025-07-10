@@ -1,5 +1,7 @@
 import { writeFileSync } from "fs";
-import { audioTriggers } from "./audio-triggers.js";
+import { loadTriggers } from "../utils/load-triggers.js";
+
+const audioTriggers = loadTriggers("audio");
 
 // audioTriggers keys are the trigger strings themselves, i.e., "lol"; the prefix '!' is prepended to each trigger in the file
 const triggers = Object.keys(audioTriggers).map((trigger) => {

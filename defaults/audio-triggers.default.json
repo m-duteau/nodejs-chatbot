@@ -1,0 +1,8 @@
+{
+    "hello": {
+        "file": "Female Saying Hello Sound Effect",
+        "audioMessage": "Hello!"
+    },
+    "wompwomp": { "file": "Sad Trombone - Sound Effect (HD)" },
+    "lol": { "file": "Sound Effects - Sitcom Laugh" }
+}

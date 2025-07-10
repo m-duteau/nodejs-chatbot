@@ -1,17 +1,17 @@
 import path from "path";
 import { getTriggerMatch } from "../utils/get-trigger-match.js";
-import {
-    audioTriggers,
-    chatTriggers,
-    openaiTriggers,
-    spotifyTriggers,
-} from "../triggers/index.js";
+import { loadTriggers } from "../utils/load-triggers.js";
 import { promptOpenAI } from "../utils/openai-helper.js";
 import { PythonShell } from "python-shell";
 import { handleSpotifyCommand } from "../spotify/index.js";
 
 // Path to the script that runs audio for audio commands
 const audioPlayerPath = path.resolve("utils", "audio_player.py");
+const chatTriggers = await loadTriggers("chat");
+const audioTriggers = await loadTriggers("audio");
+const openaiTriggers = await loadTriggers("openai");
+const spotifyTriggers = await loadTriggers("spotify");
+const prefixes = await loadTriggers("prefixes");
 
 // Bulk of command processing occurs in this function
 // Add more commands at your leisure in between the first if statement and the last else if statement to avoid any issues
@@ -21,16 +21,22 @@ export async function processCommand(message, currentChatter, sendChatMessage) {
     // This variable will hold OpenAI trigger data if the message starts with a trigger (I.e., "!chatbot")
     const matchedOpenaiTrigger = getTriggerMatch(
         potentialTrigger,
-        openaiTriggers
+        openaiTriggers,
+        prefixes
     );
     // This variable will hold chat message trigger data if the message starts with a trigger (I.e., "!commands")
-    const matchedChatTrigger = getTriggerMatch(message, chatTriggers);
+    const matchedChatTrigger = getTriggerMatch(message, chatTriggers, prefixes);
     // This variable will hold audio trigger data if the message starts with a trigger (I.e., "!lol")
-    const matchedAudioTrigger = getTriggerMatch(message, audioTriggers);
+    const matchedAudioTrigger = getTriggerMatch(
+        message,
+        audioTriggers,
+        prefixes
+    );
     // This variable will hold Spotify trigger if the message starts with a trigger (I.e., "!songrequest")
     const matchedSpotifyTrigger = getTriggerMatch(
         potentialTrigger,
-        spotifyTriggers
+        spotifyTriggers,
+        prefixes
     );
 
     // If an OpenAI trigger phrase was detected in the message, promptOpenAI will execute and a response will be sent to the chat
